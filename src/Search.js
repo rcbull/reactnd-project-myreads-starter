@@ -36,8 +36,7 @@ class Search extends React.Component {
 
   searchBook(criteria) {
     if (criteria.length > 0) {
-      BooksAPI.search(criteria, 50).then((searchedBooks) => {
-        console.log(searchedBooks);
+      BooksAPI.search(criteria, 20).then((searchedBooks) => {
         if (searchedBooks && searchedBooks.length > 0) {
           this.setState({ searchedBooks, message: "The query result is: " + searchedBooks.length })
         } else {
