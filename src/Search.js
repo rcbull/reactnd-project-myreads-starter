@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'
+import { Link, Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import Book from './Book';
-import PropTypes from 'prop-types';
+import Book from './Book'
+import PropTypes from 'prop-types'
 
 //search component
 class Search extends React.Component {
@@ -20,45 +21,46 @@ class Search extends React.Component {
     message: "No results"
   }
 
-  handleClick = () => {
-    this.props.backtohome();
-  }
-
   updateShelf(book, newShelf) {
     if (book) {
       BooksAPI.update(book, newShelf).then(() => {
         book.shelf = newShelf;
-        this.setState({ message: "Added book: "+book.title+" to shelf "+ newShelf});
+        this.setState({ message: "Added book: " + book.title + " to shelf " + newShelf });
       })
     }
   }
 
   handleSearch = (value) => {
-    this.searchBook(value);
+    this.searchBook(value)
   }
 
   searchBook(criteria) {
     if (criteria.length > 0) {
-      BooksAPI.search(criteria, 20).then((searchedBooks) => {
-
+      BooksAPI.search(criteria, 50).then((searchedBooks) => {
         console.log(searchedBooks);
         if (searchedBooks && searchedBooks.length > 0) {
           this.setState({ searchedBooks, message: "The query result is: " + searchedBooks.length })
         } else {
           this.setState({ searchedBooks: [], message: "No results" })
         }
-      })
+      }).catch(
+        (searchedBooks) => {
+          this.setState({ searchedBooks, message: "No results" })
+        }
+      )
+    } else {
+      this.setState({ searchedBooks: [], message: "No results" })
     }
   }
 
   render() {
     const {
-    } = this.state;
+    } = this.state
 
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <a className="close-search" onClick={this.handleClick}>Close</a>
+          <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
             <input type="text" placeholder="Search by title or author"
               onChange={(event) => this.handleSearch(event.target.value)} />
@@ -90,9 +92,8 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  backtohome: PropTypes.func,
   searchBook: PropTypes.func,
   updateShelf: PropTypes.func
-};
+}
 
-export default Search;
+export default Search

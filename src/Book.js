@@ -17,11 +17,16 @@ class Book extends React.Component {
     render() {
 
         const { title, authors } = this.props.book
+        let url = ""
+        //checking if book has property imageLinks
+        if(this.props.book.hasOwnProperty("imageLinks")){
+            url = this.props.book.imageLinks.thumbnail
+        }
 
         return (
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 174, backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 174, backgroundImage: `url("${url}")` }}></div>
                     <div className="book-shelf-changer">
                         <select
                             value={this.state.shelf}

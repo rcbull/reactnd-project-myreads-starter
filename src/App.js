@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link, Route } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import Search from './Search';
-import Book from './Book';
+import Search from './Search'
+import Shelf from './Shelf'
 import './App.css'
 
 // root component
@@ -53,6 +53,8 @@ class App extends React.Component {
     })
 
     this.fetchMyBooks();
+
+    this.setState({ shelf: newShelf })
   }
 
   //click on search link
@@ -71,73 +73,46 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <Search backtohome={this.handleSearch.bind(this)}
-            updateShelf={this.updateShelf.bind(this)}
-          />
-        ) :
-          (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Currently Reading</h2>
-                    <div className="bookshelf-books">
-                      <ol className="books-grid">
-                        {this.state.booksCurrently.map((book) => (
-                          <li key={book.id} className="contact-list-item">
-                            <Book
-                              book={book}
-                              updateShelf={this.updateShelf.bind(this)}
-                            />
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                  </div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Want to Read</h2>
-                    <div className="bookshelf-books">
-                      <ol className="books-grid">
-                        {this.state.booksWant.map((book) => (
-                          <li key={book.id} className="contact-list-item">
-                            <Book
-                              book={book}
-                              updateShelf={this.updateShelf.bind(this)}
-                            />
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                  </div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Read</h2>
-                    <div className="bookshelf-books">
-                      <ol className="books-grid">
-                        {this.state.booksRead.map((book) => (
-                          <li key={book.id} className="contact-list-item">
-                            <Book
-                              book={book}
-                              updateShelf={this.updateShelf.bind(this)}
-                            />
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="open-search">
-                <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+        <Route exact path="/" render={() => (
+          <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              <div>
+                <Shelf
+                  books={this.state.booksCurrently}
+                  title={"Currently Reading"}
+                  updateShelf={this.updateShelf.bind(this)} />
+
+                <Shelf
+                  books={this.state.booksWant}
+                  title={"Want to Read"}
+                  updateShelf={this.updateShelf.bind(this)} />
+
+                <Shelf
+                  books={this.state.booksRead}
+                  title={"Read"}
+                  updateShelf={this.updateShelf.bind(this)} />
               </div>
             </div>
-          )}
+            {/* <div className="open-search">
+              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+            </div> */}
+            <div className="open-search">
+              <Link to="/search">Add a book</Link>
+            </div>
+          </div>
+        )} />
+
+        <Route path="/search" render={() => (
+          <Search backtohome={this.handleSearch.bind(this)}
+            updateShelf={this.updateShelf.bind(this)} />
+        )} />
       </div>
     )
   }
 }
+
 
 export default App
