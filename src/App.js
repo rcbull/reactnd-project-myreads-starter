@@ -13,7 +13,8 @@ class App extends React.Component {
     booksCurrently: [],
     booksWant: [],
     booksRead: [],
-    searchedBooks: []
+    searchedBooks: [],
+    lastChange: new Date().getTime()
   }
 
   //load all books on start app
@@ -53,8 +54,7 @@ class App extends React.Component {
     })
 
     this.fetchMyBooks();
-
-    this.setState({ shelf: newShelf })
+    this.setState({ shelf: newShelf, lastChange: new Date().getTime() })
   }
 
   //click on search link
@@ -107,7 +107,8 @@ class App extends React.Component {
 
         <Route path="/search" render={() => (
           <Search backtohome={this.handleSearch.bind(this)}
-            updateShelf={this.updateShelf.bind(this)} />
+            updateShelf={this.updateShelf.bind(this)} 
+            books={this.state.books}/>
         )} />
       </div>
     )

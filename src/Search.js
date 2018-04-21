@@ -38,6 +38,18 @@ class Search extends React.Component {
     if (criteria.length > 0) {
       BooksAPI.search(criteria, 20).then((searchedBooks) => {
         if (searchedBooks && searchedBooks.length > 0) {
+          //update shelf
+          searchedBooks.forEach((book, index) => {
+            let _book = this.props.books.find((b) => b.id === book.id)
+            console.log(_book)
+            if(_book){
+              book.shelf = _book.shelf
+            }else{
+              book.shelf = 'none'
+            }
+            searchedBooks[index] = book;
+          });
+
           this.setState({ searchedBooks, message: "The query result is: " + searchedBooks.length })
         } else {
           this.setState({ searchedBooks: [], message: "No results" })
@@ -92,7 +104,8 @@ class Search extends React.Component {
 
 Search.propTypes = {
   searchBook: PropTypes.func,
-  updateShelf: PropTypes.func
+  updateShelf: PropTypes.func,
+  books: PropTypes.array
 }
 
 export default Search

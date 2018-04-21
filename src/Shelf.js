@@ -9,7 +9,7 @@ class Shelf extends React.Component {
     }
 
     render() {
-        console.log(this.props);
+        //console.log(this.props);
         return (
             <div className="bookshelf">
                 <h2 className="bookshelf-title">{this.props.title}</h2>

@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 //book component
 class Book extends React.Component {
     state = {
-        shelf: this.props.book.shelf
+        shelf: this.props.book.shelf,
+        lastChange: new Date().getTime()
     }
 
     updateShelf = (event) => {
         this.props.updateShelf(this.props.book, event.target.value);
 
-        this.setState({ shelf: event.target.value})
+        this.setState({ shelf: event.target.value, lastChange: new Date().getTime()})
     }
 
     render() {
